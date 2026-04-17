@@ -95,12 +95,19 @@ if ! id -u "$APP_USER" >/dev/null 2>&1; then
 fi
 
 # ---------- 3. clone / update ----------
-# Mark the app dir as a safe git directory (it's owned by $APP_USER, but we run as root)
-git config --global --add safe.directory "$APP_DIR" 2>/dev/null || true
+# $APP_DIR may be owned by $APP_USER while this script runs as root;
+# run git as the owning user (or root if dir doesn't exist yet).
+export GIT_TERMINAL_PROMPT=0
 
 if [[ -d "$APP_DIR/.git" ]]; then
     log "Updating existing clone at $APP_DIR"
-    git -C "$APP_DIR" -c safe.directory="$APP_DIR" pull --ff-only
+    OWNER_UID=$(stat -c '%u' "$APP_DIR")
+    OWNER_NAME=$(id -nu "$OWNER_UID" 2>/dev/null || echo root)
+    if [[ "$OWNER_NAME" == "root" || "$OWNER_UID" == "0" ]]; then
+        git -C "$APP_DIR" pull --ff-only
+    else
+        sudo -u "$OWNER_NAME" git -C "$APP_DIR" pull --ff-only
+    fi
 else
     log "Cloning repo into $APP_DIR"
     git clone "$REPO_URL" "$APP_DIR"
