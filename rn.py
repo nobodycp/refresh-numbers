@@ -30,7 +30,7 @@ def layan(number):
 
     try:
         response = requests.post(url, json=payload, headers=headers)
-        print(response.text)
+        # print(response.text)
         if 'لم يتم العثور على رقمك' in response.text:
             return 0
         elif 'يمكنك تحديث الرقم مرة كل خمس ساعات' in response.text:
@@ -105,7 +105,7 @@ def areen(number):
 
     try:
         response = requests.post(url, headers=headers, data=payload)
-        print(response.json())
+        # print(response.json())
         if response.json()['StatusCode'] == 993:
             return 2
         elif response.json()['StatusCode'] == 250:
