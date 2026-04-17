@@ -1,33 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl" data-theme="light">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Phone Number Refresh System</title>
+    <title data-i18n="page.title">تحديث الأرقام</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
-    <div class="card">
-        <h1>Phone Number Refresh</h1>
-        <p class="subtitle">Enter a phone number to refresh it</p>
+    <header class="top-bar">
+        <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle theme">
+            <span class="icon-sun">☀️</span>
+            <span class="icon-moon">🌙</span>
+        </button>
+        <button id="lang-toggle" class="text-btn" type="button" aria-label="Toggle language">
+            <span data-lang-label>EN</span>
+        </button>
+    </header>
 
-        <form id="refresh-form" novalidate>
-            <label for="phone">Phone Number</label>
-            <input
-                type="text"
-                id="phone"
-                name="phone"
-                placeholder="05XXXXXXXX"
-                maxlength="10"
-                inputmode="numeric"
-                autocomplete="off"
-                required
-            />
-            <button type="submit" id="submit-btn">Refresh</button>
-        </form>
+    <main class="page">
+        <section class="card" aria-live="polite">
+            <div class="logo" aria-hidden="true">
+                <div class="logo-placeholder">LOGO</div>
+            </div>
 
-        <div id="message" class="message hidden"></div>
-    </div>
+            <h1 data-i18n="app.title">نظام تحديث الأرقام</h1>
+            <p class="subtitle" data-i18n="app.subtitle">أدخل رقم الهاتف لتحديثه</p>
+
+            <form id="refresh-form" novalidate autocomplete="off">
+                <div class="field">
+                    <label for="phone" data-i18n="form.label">رقم الهاتف</label>
+                    <input
+                        type="text"
+                        id="phone"
+                        name="phone"
+                        placeholder="05XXXXXXXX"
+                        maxlength="10"
+                        inputmode="numeric"
+                        dir="ltr"
+                        required
+                    />
+                    <small id="field-hint" class="field-hint" data-i18n="form.hint">
+                        يجب أن يكون الرقم 10 أرقام ويبدأ بـ 05
+                    </small>
+                </div>
+
+                <button type="submit" id="submit-btn" class="primary-btn">
+                    <span class="btn-label" data-i18n="form.submit">تحديث</span>
+                    <span class="btn-spinner" aria-hidden="true"></span>
+                </button>
+            </form>
+
+            <div id="alert" class="alert" role="status" aria-live="polite"></div>
+        </section>
+
+        <footer class="footer">
+            <span data-i18n="footer.text">© نظام تحديث الأرقام</span>
+        </footer>
+    </main>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
