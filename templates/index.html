@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" data-theme="dark">
+<html lang="ar" dir="rtl" data-theme="light">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -11,68 +11,42 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
-    <div class="bg" aria-hidden="true">
-        <div class="bg-grid"></div>
-        <span class="orb orb-a"></span>
-        <span class="orb orb-b"></span>
-        <span class="orb orb-c"></span>
-        <span class="orb orb-d"></span>
-        <div class="bg-noise"></div>
-    </div>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
 
     <header class="toolbar">
         <button id="lang-toggle" class="pill" type="button" aria-label="Change language">
-            <svg class="pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="9"></circle>
-                <path d="M3 12h18"></path>
-                <path d="M12 3a13 13 0 0 1 0 18a13 13 0 0 1 0-18z"></path>
-            </svg>
             <span data-lang-label>EN</span>
         </button>
-
-        <button id="theme-toggle" class="pill pill-icon-only" type="button" aria-label="Toggle theme">
-            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <button id="theme-toggle" class="pill pill-icon" type="button" aria-label="Toggle theme">
+            <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="4"></circle>
                 <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
             </svg>
-            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path>
             </svg>
         </button>
     </header>
 
     <main class="stage">
-        <section class="card" aria-live="polite">
-            <div class="card-glow" aria-hidden="true"></div>
-            <div class="card-border" aria-hidden="true"></div>
-
-            <div class="brand">
-                <div class="brand-logo" aria-hidden="true">
-                    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M24 6l14 8v10c0 9-6 15-14 18c-8-3-14-9-14-18V14z"></path>
-                        <path d="M17 24l5 5l10-10"></path>
+        <section class="card">
+            <div class="logo">
+                <div class="logo-mark" aria-hidden="true">
+                    <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 5l13 7v9c0 8-5.5 13-13 16c-7.5-3-13-8-13-16v-9z"></path>
+                        <path d="M14 20l5 5l9-9"></path>
                     </svg>
                 </div>
-                <div class="brand-text">
-                    <span class="brand-title" data-i18n="brand.title">Pro Sim</span>
-                    <span class="brand-tag" data-i18n="brand.tag">Phone Refresh Portal</span>
-                </div>
+                <span class="logo-name">Pro Sim</span>
             </div>
 
-            <div class="headline">
-                <h1 data-i18n="app.title">تحديث رقم الهاتف</h1>
-                <p data-i18n="app.subtitle">أدخل الرقم وسنتولّى التحديث لك خلال ثوانٍ.</p>
-            </div>
+            <h1 class="title" data-i18n="app.title">مرحبا بك</h1>
+            <p class="subtitle" data-i18n="app.subtitle">الرجاء ادخال رقم الهاتف لتحديث الرقم</p>
 
             <form id="refresh-form" novalidate autocomplete="off">
                 <div class="field">
                     <label for="phone" data-i18n="form.label">رقم الهاتف</label>
                     <div class="input-wrap">
-                        <span class="input-icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M22 16.9v3a2 2 0 0 1-2.2 2a19.8 19.8 0 0 1-8.6-3.1a19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8 9.6a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"></path>
-                            </svg>
-                        </span>
                         <input
                             type="text"
                             id="phone"
@@ -84,34 +58,29 @@
                             required
                         />
                         <span class="input-check" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M5 12l5 5L20 7"></path>
                             </svg>
                         </span>
                     </div>
-                    <small id="field-hint" class="field-hint" data-i18n="form.hint">
-                        10 أرقام تبدأ بـ 05
-                    </small>
+                    <small id="field-hint" class="field-hint"></small>
                 </div>
 
                 <button type="submit" id="submit-btn" class="cta">
-                    <span class="cta-shine" aria-hidden="true"></span>
-                    <span class="cta-label" data-i18n="form.submit">تحديث الآن</span>
-                    <svg class="cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M5 12h14"></path>
-                        <path d="M13 6l6 6l-6 6"></path>
-                    </svg>
+                    <span class="cta-label" data-i18n="form.submit">تحديث</span>
                     <span class="cta-spinner" aria-hidden="true"></span>
                 </button>
             </form>
 
             <div id="alert" class="alert" role="status" aria-live="polite">
-                <span class="alert-icon" aria-hidden="true"></span>
+                <span class="alert-dot" aria-hidden="true"></span>
                 <span class="alert-text"></span>
             </div>
         </section>
 
-        <p class="footnote" data-i18n="footer.text">© Phone Refresh Portal</p>
+        <footer class="footer">
+            <span id="footer-text">pro sim 2026</span>
+        </footer>
     </main>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
