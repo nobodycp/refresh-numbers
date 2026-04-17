@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="color-scheme" content="light dark" />
     <title data-i18n="page.title">تحديث الهاتف - Pro Sim</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}" />
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='logo.png') }}" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
@@ -55,12 +57,8 @@
         <section class="card">
             <div class="logo">
                 <div class="logo-mark" aria-hidden="true">
-                    <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 5l13 7v9c0 8-5.5 13-13 16c-7.5-3-13-8-13-16v-9z"></path>
-                        <path d="M14 20l5 5l9-9"></path>
-                    </svg>
+                    <img src="{{ url_for('static', filename='logo.png') }}" alt="Pro Sim" />
                 </div>
-                <span class="logo-name">Pro Sim</span>
             </div>
 
             <h1 class="title" data-i18n="app.title">مرحبا بك</h1>
