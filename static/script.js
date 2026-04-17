@@ -16,7 +16,7 @@ const TRANSLATIONS = {
         "validation.ok": "جاهز للإرسال",
         "msg.success": "تم تحديث الرقم بنجاح",
         "msg.wait": "الرقم محدَّث مؤخراً، حاول بعد قليل",
-        "msg.notfound": "الرقم الخاص بك غير تابع لوكالة ProSim",
+        "msg.notfound": "الرقم الخاص بك غير تابع لوكالة Pro Sim",
         "msg.error": "حدث خطأ غير متوقع",
         "msg.network": "تعذّر الاتصال بالخادم",
         "msg.sending": "جاري الإرسال..."
@@ -34,7 +34,7 @@ const TRANSLATIONS = {
         "validation.ok": "Ready",
         "msg.success": "Number refreshed successfully",
         "msg.wait": "Recently refreshed, try again shortly",
-        "msg.notfound": "Your number is not registered with ProSim agency",
+        "msg.notfound": "Your number is not registered with Pro Sim agency",
         "msg.error": "An unexpected error occurred",
         "msg.network": "Failed to connect to the server",
         "msg.sending": "Sending request..."
@@ -60,7 +60,7 @@ const alertText = alertBox.querySelector(".alert-text");
 const footerText = $("#footer-text");
 
 let currentLang = localStorage.getItem(STORAGE.LANG) || "ar";
-let currentTheme = localStorage.getItem(STORAGE.THEME) || "light";
+let currentTheme = localStorage.getItem(STORAGE.THEME) || "dark";
 
 function t(key) {
     return (TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang][key]) || key;
