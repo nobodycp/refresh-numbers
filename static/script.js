@@ -4,8 +4,8 @@
 
 const TRANSLATIONS = {
     ar: {
-        "page.title": "ProSim",
-        "brand.title": "ProSim",
+        "page.title": "تحديث الهاتف - Pro Sim",
+        "brand.title": "Pro Sim",
         "brand.tag": "بوابة تحديث الأرقام",
         "app.title": "تحديث رقم الهاتف",
         "app.subtitle": "أدخل الرقم وسنتولّى التحديث لك خلال ثوانٍ.",
@@ -28,8 +28,8 @@ const TRANSLATIONS = {
         "aria.theme": "تبديل الوضع"
     },
     en: {
-        "page.title": "ProSim",
-        "brand.title": "ProSim",
+        "page.title": "Phone Refresh - Pro Sim",
+        "brand.title": "Pro Sim",
         "brand.tag": "Phone Refresh Portal",
         "app.title": "Refresh a phone number",
         "app.subtitle": "Enter the number and we'll handle the refresh in seconds.",
