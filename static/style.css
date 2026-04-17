@@ -407,37 +407,23 @@ body {
 }
 
 .logo-mark {
-    width: 100px;
-    height: 100px;
-    display: flex;
+    height: 92px;
+    max-width: 100%;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    position: relative;
-    overflow: visible;
-    filter: drop-shadow(0 10px 22px rgba(220, 38, 38, 0.28));
-    transition: transform var(--t-med) var(--ease), filter var(--t-med) var(--ease);
-}
-
-.logo-mark::before {
-    content: "";
-    position: absolute;
-    inset: -20%;
-    background: radial-gradient(circle, rgba(220, 38, 38, 0.22), transparent 60%);
-    filter: blur(10px);
-    z-index: -1;
-    opacity: 0.8;
-    pointer-events: none;
+    transition: transform var(--t-med) var(--ease);
 }
 
 .logo-mark:hover { transform: translateY(-2px) scale(1.03); }
 
 .logo-mark img,
 .logo-mark svg {
-    width: 100%;
     height: 100%;
+    width: auto;
+    max-width: 100%;
     object-fit: contain;
-    transform: scale(1.45);
-    transform-origin: center;
+    display: block;
     -webkit-user-drag: none;
     user-select: none;
 }
@@ -467,7 +453,7 @@ html[lang="ar"] .logo-name { letter-spacing: 1.5px; }
     color: var(--text-soft);
     font-size: 0.92rem;
     line-height: 1.55;
-    margin-bottom: 28px;
+    margin-bottom: 14px;
     max-width: 320px;
     margin-inline: auto;
 }
@@ -675,10 +661,23 @@ form {
 
 .footer {
     margin-top: 22px;
-    color: var(--text-muted);
-    font-size: 0.78rem;
+    font-size: 0.82rem;
+    font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
+    background: linear-gradient(90deg, #b8860b 0%, #f5d77a 30%, #fff3b0 50%, #f5d77a 70%, #b8860b 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 14px rgba(234, 179, 8, 0.18);
+    animation: goldShimmer 6s linear infinite;
+}
+
+@keyframes goldShimmer {
+    0%   { background-position: 0% 0; }
+    100% { background-position: 200% 0; }
 }
 
 html[lang="ar"] .footer {
@@ -695,7 +694,7 @@ html[lang="ar"] .footer {
     .card { padding: 32px 22px 24px; border-radius: 20px; }
     .title { font-size: 1.45rem; }
     .subtitle { font-size: 0.88rem; margin-bottom: 22px; }
-    .logo-mark { width: 80px; height: 80px; }
+    .logo-mark { height: 70px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

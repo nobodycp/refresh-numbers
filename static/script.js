@@ -6,7 +6,7 @@ const TRANSLATIONS = {
     ar: {
         "page.title": "تحديث الهاتف - Pro Sim",
         "app.title": "مرحبا بك",
-        "app.subtitle": "الرجاء ادخال رقم الهاتف لتحديث الرقم",
+        "app.subtitle": "الرجاء ادخال الرقم المراد تحديثه",
         "form.label": "رقم الهاتف",
         "form.submit": "تحديث",
         "form.submitting": "جارِ التنفيذ",
@@ -27,7 +27,7 @@ const TRANSLATIONS = {
     en: {
         "page.title": "Phone Refresh - Pro Sim",
         "app.title": "Welcome",
-        "app.subtitle": "Please enter the phone number to refresh it",
+        "app.subtitle": "Please enter the number you want to refresh",
         "form.label": "Phone Number",
         "form.submit": "Refresh",
         "form.submitting": "Processing",
@@ -84,6 +84,10 @@ function applyLanguage(lang) {
 
     document.querySelectorAll("[data-i18n]").forEach((el) => {
         el.textContent = t(el.getAttribute("data-i18n"));
+    });
+
+    document.querySelectorAll("[data-i18n-aria]").forEach((el) => {
+        el.setAttribute("aria-label", t(el.getAttribute("data-i18n-aria")));
     });
 
     document.title = t("page.title");

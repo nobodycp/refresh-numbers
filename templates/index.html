@@ -57,16 +57,15 @@
         <section class="card">
             <div class="logo">
                 <div class="logo-mark" aria-hidden="true">
-                    <img src="{{ url_for('static', filename='logo.png') }}" alt="Pro Sim" />
+                    <img src="{{ url_for('static', filename='logo2.png') }}" alt="Pro Sim" />
                 </div>
             </div>
 
             <h1 class="title" data-i18n="app.title">مرحبا بك</h1>
-            <p class="subtitle" data-i18n="app.subtitle">الرجاء ادخال رقم الهاتف لتحديث الرقم</p>
+            <p class="subtitle" data-i18n="app.subtitle">الرجاء ادخال الرقم المراد تحديثه</p>
 
             <form id="refresh-form" novalidate autocomplete="off">
                 <div class="field">
-                    <label for="phone" data-i18n="form.label">رقم الهاتف</label>
                     <div class="input-wrap">
                         <input
                             type="text"
@@ -76,6 +75,8 @@
                             maxlength="10"
                             inputmode="numeric"
                             dir="ltr"
+                            data-i18n-aria="form.label"
+                            aria-label="رقم الهاتف"
                             required
                         />
                         <span class="input-check" aria-hidden="true">
@@ -100,7 +101,7 @@
         </section>
 
         <footer class="footer">
-            <span id="footer-text">pro sim 2026</span>
+            <span id="footer-text">Pro Sim 2026</span>
         </footer>
     </main>
 

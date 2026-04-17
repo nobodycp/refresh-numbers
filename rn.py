@@ -42,7 +42,6 @@ def layan(number):
     except Exception as e:
         return 4
 
-# print(layan('0512509368'))
 
 def aloha(phone_number):
     url = "https://refresh.telecom.co.il/home/refreshNumber"
@@ -78,7 +77,6 @@ def aloha(phone_number):
             return 4
     except:
         return 4
-# print(aloha("0515973340"))
 
 
 def areen(number):
@@ -117,5 +115,3 @@ def areen(number):
     except:
         return 4
 
-
-# print(areen("0528066540"))

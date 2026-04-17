@@ -166,13 +166,13 @@
         }
 
         function spawnPulse(edges) {
-            if (!edges.length || pulses.length >= 14) return;
-            if (Math.random() > 0.08) return;
+            if (!edges.length || pulses.length >= 28) return;
+            if (Math.random() > 0.22) return;
             const e = edges[Math.floor(Math.random() * edges.length)];
             pulses.push({
                 i: e[0], j: e[1],
                 t: 0,
-                speed: 0.006 + Math.random() * 0.012
+                speed: 0.003 + Math.random() * 0.005
             });
         }
 
@@ -310,7 +310,7 @@
     })();
 
     const VARIANTS = { stars, network, dots };
-    const ORDER = ["stars", "network", "dots"];
+    const ORDER = ["network", "stars", "dots"];
 
     function tick(now) {
         ctx.clearRect(0, 0, W, H);
@@ -351,5 +351,5 @@
         refreshColor
     };
 
-    start(localStorage.getItem("rn_bg") || "dots");
+    start(localStorage.getItem("rn_bg") || "network");
 })();
