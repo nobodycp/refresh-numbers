@@ -1,12 +1,17 @@
 .env
+.secret_key
 .venv/
 venv/
 __pycache__/
 *.pyc
 *.pyo
 *.sqlite3
+*.sqlite3-journal
+*.sqlite3-wal
+*.sqlite3-shm
 *.db
 .idea/
 .vscode/
 *.log
+logs/
 .DS_Store

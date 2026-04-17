@@ -20,6 +20,8 @@ const TRANSLATIONS = {
         "msg.error": "حدث خطأ غير متوقع",
         "msg.network": "تعذّر الاتصال بالخادم",
         "msg.sending": "جاري الإرسال...",
+        "msg.ratelimit": "عدد كبير من المحاولات، الرجاء الانتظار قليلاً",
+        "msg.session": "انتهت الجلسة، يتم التحديث...",
         "bg.stars": "نجوم وشهب",
         "bg.network": "شبكة بيانات",
         "bg.dots": "نقاط ناعمة"
@@ -41,6 +43,8 @@ const TRANSLATIONS = {
         "msg.error": "An unexpected error occurred",
         "msg.network": "Failed to connect to the server",
         "msg.sending": "Sending request...",
+        "msg.ratelimit": "Too many attempts, please wait a moment",
+        "msg.session": "Session expired, reloading...",
         "bg.stars": "Stars & meteors",
         "bg.network": "Data network",
         "bg.dots": "Soft dots"
@@ -48,6 +52,9 @@ const TRANSLATIONS = {
 };
 
 const STORAGE = { LANG: "rn_lang", THEME: "rn_theme" };
+
+const CSRF_TOKEN = (document.querySelector('meta[name="csrf-token"]') || {}).content || "";
+const HONEYPOT_NAME = (document.querySelector('meta[name="honeypot-field"]') || {}).content || "";
 
 const $ = (s) => document.querySelector(s);
 
@@ -177,14 +184,36 @@ async function submitRefresh(number) {
     showAlert(t("msg.sending"), "info");
 
     try {
+        const body = { phone_number: number };
+        if (HONEYPOT_NAME) {
+            const hp = document.getElementById(HONEYPOT_NAME);
+            body[HONEYPOT_NAME] = hp ? hp.value : "";
+        }
+
         const res = await fetch("/refresh", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ phone_number: number })
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-Token": CSRF_TOKEN,
+                "X-Requested-With": "XMLHttpRequest"
+            },
+            body: JSON.stringify(body)
         });
 
         let data = {};
         try { data = await res.json(); } catch (_) {}
+
+        if (res.status === 429) {
+            showAlert(t("msg.ratelimit"), "error");
+            return;
+        }
+
+        if (res.status === 403 && data && data.reload) {
+            showAlert(t("msg.session"), "error");
+            setTimeout(() => window.location.reload(), 1400);
+            return;
+        }
 
         const code = typeof data.code === "number" ? data.code : 4;
         const type = CODE_TO_TYPE[code] || "error";

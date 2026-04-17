@@ -21,5 +21,19 @@ RestartSec=5
 KillMode=mixed
 TimeoutStopSec=20
 
+# Hardening
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+LockPersonality=true
+ReadWritePaths=__APP_DIR__
+
 [Install]
 WantedBy=multi-user.target

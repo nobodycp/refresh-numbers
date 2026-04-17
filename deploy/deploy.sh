@@ -122,15 +122,27 @@ python3 -m venv "$APP_DIR/.venv"
 # ---------- 5. .env ----------
 if [[ ! -f "$APP_DIR/.env" ]]; then
     warn ".env not found — creating a template (edit it and re-run)"
-    cat > "$APP_DIR/.env" <<'EOF'
+    GEN_SECRET=$(python3 -c 'import secrets;print(secrets.token_hex(32))')
+    cat > "$APP_DIR/.env" <<EOF
 PG_HOST=127.0.0.1
 PG_PORT=5432
 PG_DB=recharge_desk
 PG_USER=recharge_readonly
 PG_PASSWORD=CHANGE_ME
+
+# HMAC signing secret for session tokens — keep secret, rotating invalidates live sessions.
+SECRET_KEY=${GEN_SECRET}
 EOF
+elif ! grep -q '^SECRET_KEY=' "$APP_DIR/.env"; then
+    log "Adding SECRET_KEY to existing .env"
+    GEN_SECRET=$(python3 -c 'import secrets;print(secrets.token_hex(32))')
+    printf '\nSECRET_KEY=%s\n' "$GEN_SECRET" >> "$APP_DIR/.env"
 fi
 chmod 640 "$APP_DIR/.env"
+
+# App state files (nonces, cooldowns, logs) must be writable by the service user.
+mkdir -p "$APP_DIR/logs"
+touch "$APP_DIR/security.sqlite3" 2>/dev/null || true
 chown -R "$APP_USER:$APP_USER" "$APP_DIR"
 
 # ---------- 6. systemd ----------
