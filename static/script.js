@@ -16,7 +16,7 @@ const TRANSLATIONS = {
         "validation.ok": "جاهز للإرسال",
         "msg.success": "تم تحديث الرقم بنجاح",
         "msg.wait": "الرقم محدَّث مؤخراً، حاول بعد قليل",
-        "msg.notfound": "الرقم غير موجود في النظام",
+        "msg.notfound": "الرقم الخاص بك غير تابع لوكالة ProSim",
         "msg.error": "حدث خطأ غير متوقع",
         "msg.network": "تعذّر الاتصال بالخادم",
         "msg.sending": "جاري الإرسال..."
@@ -34,7 +34,7 @@ const TRANSLATIONS = {
         "validation.ok": "Ready",
         "msg.success": "Number refreshed successfully",
         "msg.wait": "Recently refreshed, try again shortly",
-        "msg.notfound": "Number not found in the system",
+        "msg.notfound": "Your number is not registered with ProSim agency",
         "msg.error": "An unexpected error occurred",
         "msg.network": "Failed to connect to the server",
         "msg.sending": "Sending request..."
