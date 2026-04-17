@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Phone Number Refresh System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+    <div class="card">
+        <h1>Phone Number Refresh</h1>
+        <p class="subtitle">Enter a phone number to refresh it</p>
+
+        <form id="refresh-form" novalidate>
+            <label for="phone">Phone Number</label>
+            <input
+                type="text"
+                id="phone"
+                name="phone"
+                placeholder="05XXXXXXXX"
+                maxlength="10"
+                inputmode="numeric"
+                autocomplete="off"
+                required
+            />
+            <button type="submit" id="submit-btn">Refresh</button>
+        </form>
+
+        <div id="message" class="message hidden"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
