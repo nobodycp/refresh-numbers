@@ -42,6 +42,50 @@ err()  { printf "\033[1;31mxx\033[0m %s\n" "$*" >&2; exit 1; }
 
 [[ $EUID -eq 0 ]] || err "Run as root (sudo bash ...)"
 
+# ---------- 0. preflight: make sure we don't clash with existing services ----------
+log "Preflight checks (no changes will be made yet)"
+
+# 0.1 port must be free (or already owned by our own service)
+if ss -tlnp 2>/dev/null | awk '{print $4}' | grep -Eq "[:.]$PORT$"; then
+    OWNER=$(ss -tlnp 2>/dev/null | awk -v p=":$PORT" '$4 ~ p {print $NF}' | head -1)
+    if [[ "$OWNER" != *"refresh-numbers"* ]] && ! systemctl is-active --quiet refresh-numbers.service 2>/dev/null; then
+        err "Port $PORT is already in use by: $OWNER
+     Pick a different port with: --port 5006 (or any free one)"
+    fi
+    log "Port $PORT already bound by our own service — will be restarted"
+fi
+
+# 0.2 nginx server_name must not already exist elsewhere
+if [[ -d /etc/nginx ]]; then
+    CONFLICT=$(grep -rEl "server_name[[:space:]]+[^;]*\b${DOMAIN//./\\.}\b" /etc/nginx/sites-enabled/ /etc/nginx/conf.d/ 2>/dev/null \
+              | grep -v "/refresh-numbers$" || true)
+    if [[ -n "$CONFLICT" ]]; then
+        err "Domain $DOMAIN is already configured in nginx here:
+$CONFLICT
+     Remove/adjust that config first, or use a different --domain."
+    fi
+fi
+
+# 0.3 if app dir already exists, make sure it's our repo (not another project)
+if [[ -e "$APP_DIR" && ! -d "$APP_DIR/.git" ]]; then
+    err "$APP_DIR exists and is NOT a git clone. Refusing to overwrite. Move it or pick --dir."
+fi
+if [[ -d "$APP_DIR/.git" ]]; then
+    EXISTING_URL=$(git -C "$APP_DIR" config --get remote.origin.url || echo "")
+    if [[ -n "$EXISTING_URL" && "$EXISTING_URL" != *"refresh-numbers"* ]]; then
+        err "$APP_DIR is a git clone of a different repo: $EXISTING_URL"
+    fi
+fi
+
+log "Preflight OK — no conflicts detected"
+log "Plan:"
+printf "     app dir : %s\n" "$APP_DIR"
+printf "     user    : %s\n" "$APP_USER"
+printf "     port    : %s (127.0.0.1 only)\n" "$PORT"
+printf "     domain  : %s\n" "$DOMAIN"
+printf "     service : refresh-numbers.service\n"
+printf "     ssl     : %s\n" "$([[ $SKIP_CERTBOT -eq 0 ]] && echo yes || echo no)"
+
 # ---------- 1. system packages ----------
 log "Installing system packages"
 apt-get update -y
