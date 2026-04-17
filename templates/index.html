@@ -17,6 +17,29 @@
         <button id="lang-toggle" class="pill" type="button" aria-label="Change language">
             <span data-lang-label>EN</span>
         </button>
+        <div class="bg-picker">
+            <button id="bg-toggle" class="pill pill-icon" type="button" aria-label="Change background" aria-haspopup="menu" aria-expanded="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3l1.8 4.2L18 9l-4.2 1.8L12 15l-1.8-4.2L6 9l4.2-1.8z"></path>
+                    <path d="M19 14l.9 2.1L22 17l-2.1.9L19 20l-.9-2.1L16 17l2.1-.9z"></path>
+                    <path d="M5 15l.7 1.6L7.3 17l-1.6.7L5 19.3l-.7-1.6L2.7 17l1.6-.7z"></path>
+                </svg>
+            </button>
+            <div id="bg-menu" class="bg-menu" role="menu" hidden>
+                <button type="button" class="bg-option" data-bg="stars" role="menuitemradio">
+                    <span class="bg-swatch bg-swatch-stars" aria-hidden="true"></span>
+                    <span data-i18n="bg.stars">نجوم وشهب</span>
+                </button>
+                <button type="button" class="bg-option" data-bg="network" role="menuitemradio">
+                    <span class="bg-swatch bg-swatch-network" aria-hidden="true"></span>
+                    <span data-i18n="bg.network">شبكة بيانات</span>
+                </button>
+                <button type="button" class="bg-option" data-bg="dots" role="menuitemradio">
+                    <span class="bg-swatch bg-swatch-dots" aria-hidden="true"></span>
+                    <span data-i18n="bg.dots">نقاط ناعمة</span>
+                </button>
+            </div>
+        </div>
         <button id="theme-toggle" class="pill pill-icon" type="button" aria-label="Toggle theme">
             <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="4"></circle>
@@ -83,6 +106,7 @@
         </footer>
     </main>
 
+    <script src="{{ url_for('static', filename='backgrounds.js') }}"></script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

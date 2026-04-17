@@ -19,7 +19,10 @@ const TRANSLATIONS = {
         "msg.notfound": "الرقم الخاص بك غير تابع لوكالة Pro Sim",
         "msg.error": "حدث خطأ غير متوقع",
         "msg.network": "تعذّر الاتصال بالخادم",
-        "msg.sending": "جاري الإرسال..."
+        "msg.sending": "جاري الإرسال...",
+        "bg.stars": "نجوم وشهب",
+        "bg.network": "شبكة بيانات",
+        "bg.dots": "نقاط ناعمة"
     },
     en: {
         "page.title": "Phone Refresh - Pro Sim",
@@ -37,7 +40,10 @@ const TRANSLATIONS = {
         "msg.notfound": "Your number is not registered with Pro Sim agency",
         "msg.error": "An unexpected error occurred",
         "msg.network": "Failed to connect to the server",
-        "msg.sending": "Sending request..."
+        "msg.sending": "Sending request...",
+        "bg.stars": "Stars & meteors",
+        "bg.network": "Data network",
+        "bg.dots": "Soft dots"
     }
 };
 
@@ -49,6 +55,7 @@ const html = document.documentElement;
 const langToggle = $("#lang-toggle");
 const langLabel = langToggle.querySelector("[data-lang-label]");
 const themeToggle = $("#theme-toggle");
+const bgToggle = $("#bg-toggle");
 const form = $("#refresh-form");
 const inputWrap = $(".input-wrap");
 const phoneInput = $("#phone");
@@ -92,7 +99,9 @@ function applyTheme(theme) {
     currentTheme = theme;
     localStorage.setItem(STORAGE.THEME, theme);
     html.setAttribute("data-theme", theme);
-    if (typeof refreshBgColor === "function") refreshBgColor();
+    if (window.BG && typeof window.BG.refreshColor === "function") {
+        window.BG.refreshColor();
+    }
 }
 
 /* ---------- Validation ---------- */
@@ -212,94 +221,60 @@ langToggle.addEventListener("click", () => {
     applyLanguage(currentLang === "ar" ? "en" : "ar");
 });
 
-/* =====================================================================
-   Animated background (gentle drifting dots with connecting threads)
-   ===================================================================== */
+const bgMenu = $("#bg-menu");
+const bgOptions = bgMenu ? Array.from(bgMenu.querySelectorAll(".bg-option")) : [];
 
-const canvas = document.getElementById("bg-canvas");
-const ctx = canvas.getContext("2d");
-let W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2);
-let dots = [];
-let dotColor = "rgba(15,23,42,0.22)";
-let raf;
-
-function refreshBgColor() {
-    const c = getComputedStyle(document.documentElement).getPropertyValue("--dot").trim();
-    if (c) dotColor = c;
+function markActiveBg() {
+    if (!window.BG || !bgOptions.length) return;
+    const cur = window.BG.current();
+    bgOptions.forEach((btn) => {
+        const on = btn.getAttribute("data-bg") === cur;
+        btn.classList.toggle("active", on);
+        btn.setAttribute("aria-checked", on ? "true" : "false");
+    });
 }
 
-function resize() {
-    W = window.innerWidth;
-    H = window.innerHeight;
-    canvas.width = W * DPR;
-    canvas.height = H * DPR;
-    canvas.style.width = W + "px";
-    canvas.style.height = H + "px";
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    seedDots();
+function openBgMenu() {
+    if (!bgMenu) return;
+    bgMenu.hidden = false;
+    bgToggle.setAttribute("aria-expanded", "true");
+    markActiveBg();
 }
 
-function seedDots() {
-    const target = Math.max(36, Math.min(90, Math.floor((W * H) / 22000)));
-    dots = new Array(target).fill(0).map(() => ({
-        x: Math.random() * W,
-        y: Math.random() * H,
-        vx: (Math.random() - 0.5) * 0.25,
-        vy: (Math.random() - 0.5) * 0.25,
-        r: Math.random() * 1.4 + 0.4
-    }));
+function closeBgMenu() {
+    if (!bgMenu) return;
+    bgMenu.hidden = true;
+    bgToggle.setAttribute("aria-expanded", "false");
 }
 
-function tick() {
-    ctx.clearRect(0, 0, W, H);
-    const linkDist = 130;
-    const linkDist2 = linkDist * linkDist;
+if (bgToggle && bgMenu) {
+    bgToggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (bgMenu.hidden) openBgMenu();
+        else closeBgMenu();
+    });
 
-    for (let i = 0; i < dots.length; i++) {
-        const d = dots[i];
-        d.x += d.vx;
-        d.y += d.vy;
-        if (d.x < -20) d.x = W + 20;
-        if (d.x > W + 20) d.x = -20;
-        if (d.y < -20) d.y = H + 20;
-        if (d.y > H + 20) d.y = -20;
+    bgOptions.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const name = btn.getAttribute("data-bg");
+            if (window.BG && name) window.BG.set(name);
+            markActiveBg();
+            closeBgMenu();
+        });
+    });
 
-        ctx.beginPath();
-        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-        ctx.fillStyle = dotColor;
-        ctx.fill();
-    }
-
-    ctx.lineWidth = 1;
-    for (let i = 0; i < dots.length; i++) {
-        for (let j = i + 1; j < dots.length; j++) {
-            const a = dots[i], b = dots[j];
-            const dx = a.x - b.x, dy = a.y - b.y;
-            const d2 = dx * dx + dy * dy;
-            if (d2 < linkDist2) {
-                const alpha = 1 - d2 / linkDist2;
-                ctx.strokeStyle = dotColor.replace(/[\d.]+\)$/, (alpha * 0.5).toFixed(3) + ")");
-                ctx.beginPath();
-                ctx.moveTo(a.x, a.y);
-                ctx.lineTo(b.x, b.y);
-                ctx.stroke();
-            }
+    document.addEventListener("click", (e) => {
+        if (!bgMenu.hidden && !bgMenu.contains(e.target) && e.target !== bgToggle) {
+            closeBgMenu();
         }
-    }
+    });
 
-    raf = requestAnimationFrame(tick);
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeBgMenu();
+    });
 }
-
-window.addEventListener("resize", () => {
-    cancelAnimationFrame(raf);
-    resize();
-    tick();
-});
 
 /* ---------- Init ---------- */
 
 applyTheme(currentTheme);
 applyLanguage(currentLang);
-refreshBgColor();
-resize();
-tick();
