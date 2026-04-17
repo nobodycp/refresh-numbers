@@ -656,6 +656,63 @@ form {
 .alert.info    { background: var(--info-bg);    color: var(--info-text);    border-color: var(--info-border); }
 
 /* =====================================================================
+   Socials
+   ===================================================================== */
+
+.socials {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.social {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    color: var(--text-soft);
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.25s ease,
+                background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.social svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+}
+
+.social:hover {
+    transform: translateY(-2px) scale(1.05);
+}
+
+.social-wa:hover {
+    background: #25D366;
+    color: #fff;
+    border-color: #25D366;
+    box-shadow: 0 8px 22px rgba(37, 211, 102, 0.35);
+}
+
+.social-fb:hover {
+    background: #1877F2;
+    color: #fff;
+    border-color: #1877F2;
+    box-shadow: 0 8px 22px rgba(24, 119, 242, 0.35);
+}
+
+.social:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* =====================================================================
    Footer
    ===================================================================== */
 
