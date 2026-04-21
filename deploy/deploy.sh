@@ -132,6 +132,12 @@ PG_PASSWORD=CHANGE_ME
 
 # HMAC signing secret for session tokens — keep secret, rotating invalidates live sessions.
 SECRET_KEY=${GEN_SECRET}
+
+# Optional — home page social icons (uncomment and set):
+# SOCIAL_FACEBOOK_URL=https://www.facebook.com/yourpage
+# SOCIAL_WHATSAPP_NUMBER=9725XXXXXXXX
+# Or use a full chat link instead of a number:
+# SOCIAL_WHATSAPP_URL=https://wa.me/9725XXXXXXXX
 EOF
 elif ! grep -q '^SECRET_KEY=' "$APP_DIR/.env"; then
     log "Adding SECRET_KEY to existing .env"

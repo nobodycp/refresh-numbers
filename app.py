@@ -77,6 +77,31 @@ def is_valid_number(number: str) -> bool:
     )
 
 
+def social_whatsapp_href() -> str:
+    """wa.me link from SOCIAL_WHATSAPP_URL or digits in SOCIAL_WHATSAPP_NUMBER."""
+    raw_url = (os.environ.get("SOCIAL_WHATSAPP_URL") or "").strip()
+    if raw_url:
+        if raw_url.startswith(("http://", "https://")):
+            return raw_url
+        return "https://" + raw_url.lstrip("/")
+    num = (os.environ.get("SOCIAL_WHATSAPP_NUMBER") or "").strip()
+    digits = "".join(c for c in num if c.isdigit())
+    if not digits:
+        return "#"
+    return f"https://wa.me/{digits}"
+
+
+def social_facebook_href() -> str:
+    u = (os.environ.get("SOCIAL_FACEBOOK_URL") or "").strip()
+    if not u:
+        return "#"
+    if u.startswith(("http://", "https://")):
+        return u
+    if u.startswith("//"):
+        return "https:" + u
+    return "https://" + u.lstrip("/")
+
+
 COMPANY_HANDLERS = {
     "layan": layan,
     "aloha": aloha,
@@ -172,6 +197,8 @@ def index():
         "index.html",
         csrf_token=token,
         honeypot_field=HONEYPOT_FIELD_NAME,
+        social_whatsapp=social_whatsapp_href(),
+        social_facebook=social_facebook_href(),
     )
 
 
