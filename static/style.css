@@ -152,19 +152,25 @@
 html,
 body {
     height: 100%;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+    overscroll-behavior-x: none;
 }
 
 html[lang="ar"] body { font-family: var(--font-ar); }
 html[lang="en"] body { font-family: var(--font-en); }
 
 body {
+    position: relative;
     font-family: var(--font-en);
     color: var(--text);
     background:
         radial-gradient(80% 50% at 50% -10%, var(--bg-soft), transparent 60%),
         var(--bg);
+    min-height: 100vh;
+    min-height: 100svh;
     min-height: 100dvh;
-    overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     transition: background var(--t-med) var(--ease), color var(--t-med) var(--ease);
 }
@@ -193,6 +199,7 @@ body {
     display: flex;
     gap: 8px;
     z-index: 10;
+    max-width: calc(100vw - 36px);
 }
 
 .pill {
@@ -234,6 +241,7 @@ body {
     top: calc(100% + 8px);
     inset-inline-end: 0;
     min-width: 210px;
+    max-width: calc(100vw - 30px);
     padding: 6px;
     display: flex;
     flex-direction: column;
@@ -365,7 +373,11 @@ body {
    ===================================================================== */
 
 .stage {
+    min-height: 100vh;
+    min-height: 100svh;
     min-height: 100dvh;
+    width: 100%;
+    max-width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -762,11 +774,31 @@ html[lang="ar"] .footer {
    ===================================================================== */
 
 @media (max-width: 480px) {
-    .stage { padding: 82px 14px 24px; }
-    .card { padding: 32px 22px 24px; border-radius: 20px; }
+    .stage { padding: 76px 14px 20px; }
+    .card { padding: 28px 20px 22px; border-radius: 20px; }
     .title { font-size: 1.45rem; }
-    .subtitle { font-size: 0.88rem; margin-bottom: 22px; }
-    .logo-mark { height: 70px; }
+    .subtitle { font-size: 0.88rem; margin-bottom: 18px; }
+    .logo-mark { height: 64px; }
+
+    .toolbar { top: 12px; inset-inline-end: 12px; gap: 6px; max-width: calc(100vw - 24px); }
+    .pill { font-size: 0.78rem; padding: 0 10px; min-height: 34px; min-width: 38px; }
+    .pill.pill-icon { width: 34px; }
+    .bg-menu { min-width: 180px; }
+
+    .input-wrap input { font-size: 1rem; padding: 13px 14px; letter-spacing: 2px; }
+    .cta { padding: 13px 16px; min-height: 46px; }
+    .alert { padding: 10px 12px; font-size: 0.84rem; }
+    .socials { gap: 12px; margin-top: 16px; }
+    .social { width: 40px; height: 40px; }
+    .social svg { width: 20px; height: 20px; }
+    .footer { margin-top: 16px; font-size: 0.74rem; }
+}
+
+@media (max-width: 360px) {
+    .stage { padding: 70px 10px 16px; }
+    .card { padding: 22px 16px 18px; }
+    .title { font-size: 1.3rem; }
+    .logo-mark { height: 56px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

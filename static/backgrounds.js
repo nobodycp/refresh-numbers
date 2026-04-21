@@ -40,8 +40,8 @@
     }
 
     function resizeCanvas() {
-        W = window.innerWidth;
-        H = window.innerHeight;
+        W = document.documentElement.clientWidth || window.innerWidth;
+        H = document.documentElement.clientHeight || window.innerHeight;
         canvas.width  = W * DPR;
         canvas.height = H * DPR;
         canvas.style.width  = W + "px";
