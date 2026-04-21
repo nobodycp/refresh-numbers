@@ -1,6 +1,8 @@
 import json
 import os
 import time
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 import psycopg2
 import psycopg2.extras
@@ -81,6 +83,17 @@ COMPANY_HANDLERS = {
     "areen": areen,
     "sky": sky,
 }
+
+# Provider maintenance windows (local Palestine time, 24h).
+# Sky: nightly downtime 22:00 → 24:00.
+PROVIDER_TZ = ZoneInfo("Asia/Hebron")
+SKY_OFFLINE_START_HOUR = 22
+SKY_OFFLINE_END_HOUR = 24
+
+
+def is_sky_offline_now() -> bool:
+    h = datetime.now(PROVIDER_TZ).hour
+    return SKY_OFFLINE_START_HOUR <= h < SKY_OFFLINE_END_HOUR
 
 
 def lookup_company(number: str):
@@ -253,7 +266,8 @@ def refresh():
         log_event("notfound", ip=ip, phone=mask_phone(number))
         return jsonify({"code": 0, "message": "Number not found in the system"}), 200
 
-    handler = COMPANY_HANDLERS.get(company_name.strip().lower())
+    company_key = company_name.strip().lower()
+    handler = COMPANY_HANDLERS.get(company_key)
     if handler is None:
         log_event(
             "unsupported_company",
@@ -263,6 +277,19 @@ def refresh():
         )
         return (
             jsonify({"code": 4, "message": f"Unsupported company: {company_name}"}),
+            200,
+        )
+
+    if company_key == "sky" and is_sky_offline_now():
+        log_event("provider_offline", ip=ip, phone=mask_phone(number), company="sky")
+        return (
+            jsonify({
+                "code": 5,
+                "message": "Sky refresh is offline 22:00-24:00",
+                "provider": "sky",
+                "window_start_hour": SKY_OFFLINE_START_HOUR,
+                "window_end_hour": SKY_OFFLINE_END_HOUR,
+            }),
             200,
         )
 

@@ -23,6 +23,7 @@ const TRANSLATIONS = {
         "msg.sending": "جاري الإرسال...",
         "msg.ratelimit": "عدد كبير من المحاولات، الرجاء الانتظار قليلاً",
         "msg.session": "انتهت الجلسة، يتم التحديث...",
+        "msg.sky_offline": "خدمة تحديث أرقام شركة سكاي متوقفة من الساعة 10 حتى 12 مساءً، الرجاء المحاولة لاحقاً",
         "time.hour": "ساعة",
         "time.hours": "ساعات",
         "time.minute": "دقيقة",
@@ -53,6 +54,7 @@ const TRANSLATIONS = {
         "msg.sending": "Sending request...",
         "msg.ratelimit": "Too many attempts, please wait a moment",
         "msg.session": "Session expired, reloading...",
+        "msg.sky_offline": "Sky number refresh is offline from 10 PM to midnight, please try again later",
         "time.hour": "hour",
         "time.hours": "hours",
         "time.minute": "minute",
@@ -190,8 +192,8 @@ function setLoading(loading) {
 
 /* ---------- Submit ---------- */
 
-const CODE_TO_TYPE = { 1: "success", 2: "warn", 0: "error", 4: "error" };
-const CODE_TO_KEY  = { 1: "msg.success", 2: "msg.wait", 0: "msg.notfound", 4: "msg.error" };
+const CODE_TO_TYPE = { 1: "success", 2: "warn", 0: "error", 4: "error", 5: "warn" };
+const CODE_TO_KEY  = { 1: "msg.success", 2: "msg.wait", 0: "msg.notfound", 4: "msg.error", 5: "msg.sky_offline" };
 
 function formatElapsed(seconds) {
     if (!Number.isFinite(seconds) || seconds < 60) {
