@@ -414,13 +414,13 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 14px;
+    gap: 6px;
+    margin-bottom: 20px;
 }
 
 .logo-mark {
-    height: 92px;
-    max-width: 100%;
+    height: 42px;
+    max-width: min(230px, 100%);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -745,7 +745,29 @@ form {
 
 .footer {
     margin-top: 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
     font-size: 0.82rem;
+}
+
+.footer-tagline {
+    margin: 0;
+    max-width: 22rem;
+    font-weight: 700;
+    line-height: 1.45;
+    letter-spacing: 0.5px;
+    color: #e11d48;
+    text-shadow: 0 0 18px rgba(225, 29, 72, 0.22);
+}
+
+html[lang="ar"] .footer-tagline {
+    letter-spacing: 0.4px;
+}
+
+.footer-brand {
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -764,7 +786,7 @@ form {
     100% { background-position: 200% 0; }
 }
 
-html[lang="ar"] .footer {
+html[lang="ar"] .footer-brand {
     text-transform: none;
     letter-spacing: 0.5px;
 }
@@ -778,7 +800,7 @@ html[lang="ar"] .footer {
     .card { padding: 28px 20px 22px; border-radius: 20px; }
     .title { font-size: 1.45rem; }
     .subtitle { font-size: 0.88rem; margin-bottom: 18px; }
-    .logo-mark { height: 64px; }
+    .logo-mark { height: 34px; max-width: min(210px, 100%); }
 
     .toolbar { top: 12px; inset-inline-end: 12px; gap: 6px; max-width: calc(100vw - 24px); }
     .pill { font-size: 0.78rem; padding: 0 10px; min-height: 34px; min-width: 38px; }
@@ -798,7 +820,7 @@ html[lang="ar"] .footer {
     .stage { padding: 70px 10px 16px; }
     .card { padding: 22px 16px 18px; }
     .title { font-size: 1.3rem; }
-    .logo-mark { height: 56px; }
+    .logo-mark { height: 30px; max-width: min(190px, 100%); }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -32,7 +32,8 @@ const TRANSLATIONS = {
         "time.lessThanMinute": "أقل من دقيقة",
         "bg.stars": "نجوم وشهب",
         "bg.network": "شبكة بيانات",
-        "bg.dots": "نقاط ناعمة"
+        "bg.dots": "نقاط ناعمة",
+        "footer.tagline": "أكبر شبكة موزعين في قطاع غزة"
     },
     en: {
         "page.title": "Phone Refresh - Pro Sim",
@@ -63,7 +64,8 @@ const TRANSLATIONS = {
         "time.lessThanMinute": "less than a minute",
         "bg.stars": "Stars & meteors",
         "bg.network": "Data network",
-        "bg.dots": "Soft dots"
+        "bg.dots": "Soft dots",
+        "footer.tagline": "The largest distributor network in the Gaza Strip"
     }
 };
 
@@ -115,7 +117,7 @@ function applyLanguage(lang) {
 
     document.title = t("page.title");
     langLabel.textContent = lang === "ar" ? "EN" : "عربي";
-    footerText.textContent = `pro sim ${new Date().getFullYear()}`;
+    footerText.textContent = `Pro Sim ${new Date().getFullYear()}`;
 
     validatePhone(phoneInput.value, false);
 }

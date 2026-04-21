@@ -204,6 +204,7 @@ def index():
         honeypot_field=HONEYPOT_FIELD_NAME,
         social_whatsapp=social_whatsapp_href(),
         social_facebook=social_facebook_href(),
+        current_year=datetime.now().year,
     )
 
 
