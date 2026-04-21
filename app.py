@@ -77,6 +77,11 @@ def is_valid_number(number: str) -> bool:
     )
 
 
+# Public contact links (override with SOCIAL_* in .env on the server).
+DEFAULT_SOCIAL_FACEBOOK_URL = "https://www.facebook.com/profile.php?id=61561099095296"
+DEFAULT_SOCIAL_WHATSAPP_NUMBER = "9725555544071"
+
+
 def social_whatsapp_href() -> str:
     """wa.me link from SOCIAL_WHATSAPP_URL or digits in SOCIAL_WHATSAPP_NUMBER."""
     raw_url = (os.environ.get("SOCIAL_WHATSAPP_URL") or "").strip()
@@ -84,7 +89,7 @@ def social_whatsapp_href() -> str:
         if raw_url.startswith(("http://", "https://")):
             return raw_url
         return "https://" + raw_url.lstrip("/")
-    num = (os.environ.get("SOCIAL_WHATSAPP_NUMBER") or "").strip()
+    num = (os.environ.get("SOCIAL_WHATSAPP_NUMBER") or DEFAULT_SOCIAL_WHATSAPP_NUMBER).strip()
     digits = "".join(c for c in num if c.isdigit())
     if not digits:
         return "#"
@@ -92,7 +97,7 @@ def social_whatsapp_href() -> str:
 
 
 def social_facebook_href() -> str:
-    u = (os.environ.get("SOCIAL_FACEBOOK_URL") or "").strip()
+    u = (os.environ.get("SOCIAL_FACEBOOK_URL") or DEFAULT_SOCIAL_FACEBOOK_URL).strip()
     if not u:
         return "#"
     if u.startswith(("http://", "https://")):
