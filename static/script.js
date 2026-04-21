@@ -14,14 +14,21 @@ const TRANSLATIONS = {
         "validation.prefix": "الرقم يجب أن يبدأ بـ 05",
         "validation.digits": "أرقام فقط",
         "validation.ok": "جاهز للإرسال",
-        "msg.success": "تم تحديث الرقم بنجاح",
-        "msg.wait": "الرقم محدَّث مؤخراً، حاول بعد قليل",
-        "msg.notfound": "الرقم الخاص بك غير تابع لوكالة Pro Sim",
+        "msg.success": "تم تحديث الرقم، الرجاء إطفاء الجهاز 10 دقائق ثم تشغيله",
+        "msg.wait": "لا يمكن التحديث أكثر من مرة خلال 6 ساعات",
+        "msg.wait_with_time": "لا يمكن التحديث أكثر من مرة خلال 6 ساعات (آخر تحديث منذ {time})",
+        "msg.notfound": "الرقم غير موجود ضمن زبائن برو سيم",
         "msg.error": "حدث خطأ غير متوقع",
         "msg.network": "تعذّر الاتصال بالخادم",
         "msg.sending": "جاري الإرسال...",
         "msg.ratelimit": "عدد كبير من المحاولات، الرجاء الانتظار قليلاً",
         "msg.session": "انتهت الجلسة، يتم التحديث...",
+        "time.hour": "ساعة",
+        "time.hours": "ساعات",
+        "time.minute": "دقيقة",
+        "time.minutes": "دقائق",
+        "time.and": "و",
+        "time.lessThanMinute": "أقل من دقيقة",
         "bg.stars": "نجوم وشهب",
         "bg.network": "شبكة بيانات",
         "bg.dots": "نقاط ناعمة"
@@ -37,14 +44,21 @@ const TRANSLATIONS = {
         "validation.prefix": "Number must start with 05",
         "validation.digits": "Numbers only",
         "validation.ok": "Ready",
-        "msg.success": "Number refreshed successfully",
-        "msg.wait": "Recently refreshed, try again shortly",
-        "msg.notfound": "Your number is not registered with Pro Sim agency",
+        "msg.success": "Number refreshed. Please turn the device off for 10 minutes, then turn it on",
+        "msg.wait": "You can't refresh more than once every 6 hours",
+        "msg.wait_with_time": "You can't refresh more than once every 6 hours (last refresh was {time} ago)",
+        "msg.notfound": "Number is not registered with Pro Sim customers",
         "msg.error": "An unexpected error occurred",
         "msg.network": "Failed to connect to the server",
         "msg.sending": "Sending request...",
         "msg.ratelimit": "Too many attempts, please wait a moment",
         "msg.session": "Session expired, reloading...",
+        "time.hour": "hour",
+        "time.hours": "hours",
+        "time.minute": "minute",
+        "time.minutes": "minutes",
+        "time.and": "and",
+        "time.lessThanMinute": "less than a minute",
         "bg.stars": "Stars & meteors",
         "bg.network": "Data network",
         "bg.dots": "Soft dots"
@@ -179,6 +193,33 @@ function setLoading(loading) {
 const CODE_TO_TYPE = { 1: "success", 2: "warn", 0: "error", 4: "error" };
 const CODE_TO_KEY  = { 1: "msg.success", 2: "msg.wait", 0: "msg.notfound", 4: "msg.error" };
 
+function formatElapsed(seconds) {
+    if (!Number.isFinite(seconds) || seconds < 60) {
+        return t("time.lessThanMinute");
+    }
+    const totalMinutes = Math.floor(seconds / 60);
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+
+    const hourWord = () => (hours === 1 ? t("time.hour") : t("time.hours"));
+    const minuteWord = () => (minutes === 1 ? t("time.minute") : t("time.minutes"));
+
+    if (hours > 0 && minutes > 0) {
+        return `${hours} ${hourWord()} ${t("time.and")} ${minutes} ${minuteWord()}`;
+    }
+    if (hours > 0) {
+        return `${hours} ${hourWord()}`;
+    }
+    return `${minutes} ${minuteWord()}`;
+}
+
+function buildWaitMessage(elapsedSeconds) {
+    if (typeof elapsedSeconds === "number" && elapsedSeconds > 0) {
+        return t("msg.wait_with_time").replace("{time}", formatElapsed(elapsedSeconds));
+    }
+    return t("msg.wait");
+}
+
 async function submitRefresh(number) {
     setLoading(true);
     showAlert(t("msg.sending"), "info");
@@ -217,7 +258,10 @@ async function submitRefresh(number) {
 
         const code = typeof data.code === "number" ? data.code : 4;
         const type = CODE_TO_TYPE[code] || "error";
-        showAlert(t(CODE_TO_KEY[code] || "msg.error"), type);
+        const message = code === 2
+            ? buildWaitMessage(data.elapsed_seconds)
+            : t(CODE_TO_KEY[code] || "msg.error");
+        showAlert(message, type);
     } catch (_) {
         showAlert(t("msg.network"), "error");
     } finally {

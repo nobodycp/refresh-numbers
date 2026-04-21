@@ -60,7 +60,10 @@
         <section class="card">
             <div class="logo">
                 <div class="logo-mark" aria-hidden="true">
-                    <img src="{{ url_for('static', filename='logo2.png') }}" alt="Pro Sim" />
+                    <picture>
+                        <source srcset="{{ url_for('static', filename='logo2.webp') }}" type="image/webp" />
+                        <img src="{{ url_for('static', filename='logo2.png') }}" alt="Pro Sim" width="647" height="220" />
+                    </picture>
                 </div>
             </div>
 
@@ -68,7 +71,7 @@
             <p class="subtitle" data-i18n="app.subtitle">الرجاء ادخال الرقم المراد تحديثه</p>
 
             <form id="refresh-form" novalidate autocomplete="off">
-                <div aria-hidden="true" style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;">
+                <div class="hp-trap" aria-hidden="true">
                     <label>Leave this empty
                         <input type="text" name="{{ honeypot_field }}" id="{{ honeypot_field }}" tabindex="-1" autocomplete="off" />
                     </label>
@@ -102,6 +105,11 @@
                 </button>
             </form>
 
+            <div id="alert" class="alert" role="status" aria-live="polite">
+                <span class="alert-dot" aria-hidden="true"></span>
+                <span class="alert-text"></span>
+            </div>
+
             <div class="socials" aria-label="Social links">
                 <a class="social social-wa" href="#" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
                     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -113,11 +121,6 @@
                         <path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06C2 17.08 5.66 21.24 10.44 22v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.91 3.78-3.91 1.1 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56v1.87h2.77l-.44 2.91h-2.33V22C18.34 21.24 22 17.08 22 12.06z"></path>
                     </svg>
                 </a>
-            </div>
-
-            <div id="alert" class="alert" role="status" aria-live="polite">
-                <span class="alert-dot" aria-hidden="true"></span>
-                <span class="alert-text"></span>
             </div>
         </section>
 

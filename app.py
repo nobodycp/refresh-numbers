@@ -10,10 +10,11 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-from rn import aloha, areen, layan
+from rn import aloha, areen, layan, sky
 from security import (
     HONEYPOT_FIELD_NAME,
     MAX_BODY_BYTES,
+    PHONE_COOLDOWN_SECONDS,
     cleanup_nonces,
     consume_nonce,
     init_db,
@@ -78,6 +79,7 @@ COMPANY_HANDLERS = {
     "layan": layan,
     "aloha": aloha,
     "areen": areen,
+    "sky": sky,
 }
 
 
@@ -131,13 +133,14 @@ def set_security_headers(resp):
         (
             "default-src 'self'; "
             "img-src 'self' data:; "
-            "style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; "
+            "style-src 'self' https://fonts.googleapis.com; "
             "font-src 'self' https://fonts.gstatic.com; "
             "script-src 'self'; "
             "connect-src 'self'; "
             "frame-ancestors 'none'; "
             "base-uri 'self'; "
-            "form-action 'self'"
+            "form-action 'self'; "
+            "object-src 'none'"
         ),
     )
     if request.path == "/":
@@ -227,9 +230,15 @@ def refresh():
     # Per-number cooldown (before hitting any upstream)
     remaining = phone_cooldown_remaining(number)
     if remaining > 0:
+        elapsed_since_last = PHONE_COOLDOWN_SECONDS - remaining
         log_event("cooldown", ip=ip, phone=mask_phone(number), remaining=remaining)
         return (
-            jsonify({"code": 2, "message": "Please wait before refreshing this number again"}),
+            jsonify({
+                "code": 2,
+                "message": "Please wait before refreshing this number again",
+                "elapsed_seconds": elapsed_since_last,
+                "remaining_seconds": remaining,
+            }),
             200,
         )
 
