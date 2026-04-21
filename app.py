@@ -79,7 +79,7 @@ def is_valid_number(number: str) -> bool:
 
 # Public contact links (override with SOCIAL_* in .env on the server).
 DEFAULT_SOCIAL_FACEBOOK_URL = "https://www.facebook.com/profile.php?id=61561099095296"
-DEFAULT_SOCIAL_WHATSAPP_NUMBER = "9725555544071"
+DEFAULT_SOCIAL_WHATSAPP_NUMBER = "972555544071"
 
 
 def social_whatsapp_href() -> str:
