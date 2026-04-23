@@ -128,9 +128,12 @@ function applyTheme(theme) {
     currentTheme = theme;
     localStorage.setItem(STORAGE.THEME, theme);
     html.setAttribute("data-theme", theme);
-    if (window.BG && typeof window.BG.refreshColor === "function") {
-        window.BG.refreshColor();
-    }
+    /* Defer canvas palette read until after style flush (mobile WebKit). */
+    requestAnimationFrame(() => {
+        if (window.BG && typeof window.BG.refreshColor === "function") {
+            window.BG.refreshColor();
+        }
+    });
 }
 
 /* ---------- Validation ---------- */

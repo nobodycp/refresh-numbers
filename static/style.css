@@ -172,7 +172,9 @@ body {
     min-height: 100svh;
     min-height: 100dvh;
     -webkit-font-smoothing: antialiased;
-    transition: background var(--t-med) var(--ease), color var(--t-med) var(--ease);
+    /* Avoid transitioning layered backgrounds with CSS variables: iOS Safari
+       can interpolate badly on theme toggle (card vs page look swapped). */
+    transition: color var(--t-med) var(--ease);
 }
 
 /* =====================================================================
@@ -220,8 +222,7 @@ body {
     font-family: inherit;
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-    transition: background var(--t-fast) var(--ease),
-                border-color var(--t-fast) var(--ease),
+    transition: border-color var(--t-fast) var(--ease),
                 transform var(--t-fast) var(--ease);
 }
 
@@ -395,8 +396,8 @@ body {
     border: 1px solid var(--card-border);
     box-shadow: var(--card-shadow);
     text-align: center;
-    transition: background var(--t-med) var(--ease),
-                border-color var(--t-med) var(--ease),
+    isolation: isolate;
+    transition: border-color var(--t-med) var(--ease),
                 box-shadow var(--t-med) var(--ease);
     animation: card-in 0.55s var(--ease-spring) both;
 }
@@ -497,8 +498,7 @@ form {
     border: 1.5px solid var(--input-border);
     border-radius: var(--radius-lg);
     transition: border-color var(--t-fast) var(--ease),
-                box-shadow var(--t-fast) var(--ease),
-                background var(--t-fast) var(--ease);
+                box-shadow var(--t-fast) var(--ease);
 }
 
 .input-wrap:focus-within {
@@ -589,8 +589,7 @@ form {
     letter-spacing: 0.2px;
     cursor: pointer;
     box-shadow: var(--cta-shadow);
-    transition: background var(--t-fast) var(--ease),
-                transform var(--t-fast) var(--ease),
+    transition: transform var(--t-fast) var(--ease),
                 opacity var(--t-fast) var(--ease);
     margin-top: 4px;
 }
